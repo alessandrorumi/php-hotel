@@ -57,6 +57,31 @@
     // }
   ?>
 
+    <form>
+    <div class="form-row">
+      <div class="form-group col-md-2 my-3">
+        <label for="parking">Parcheggio</label>
+        <select id="parking" name="parking" class="form-select">
+          <option value="">Tutti</option>
+          <option value="1">Con Parcheggio</option>
+          <option value="2">Senza Parcheggio</option>
+        </select>
+      </div>
+      <div class="form-group col-md-2 mb-1">
+        <label for="vote">Voto</label>
+        <select id="vote" name="vote" class="form-select">
+          <option value="">Tutti</option>
+          <option value="1">2 Stelle e superiori</option>
+          <option value="2">3 Stelle e superiori</option>
+          <option value="3">4 Stelle e superiori</option>
+          <option value="4">5 Stelle e superiori</option>
+        </select>
+      </div>
+      <div class="col-auto">
+        <button type="submit" class="btn btn-primary mb-3">Filtra</button>
+      </div>
+    </form>
+
     <table class="table table-striped">
       <thead>
         <tr>
@@ -78,7 +103,7 @@
               echo '<td>' . $hotel["description"] . '</td>';
               echo '<td>' . ($hotel["parking"] ? 'Sì' : 'No') . '</td>';
               echo '<td>' . $hotel["vote"] . '</td>';
-              echo '<td>' . $hotel["distance_to_center"] . '</td>';
+              echo '<td>' . $hotel["distance_to_center"] . 'km</td>';
             echo '</tr>';
           }
         ?>
