@@ -61,7 +61,7 @@
   <div class="form-row">
     <div class="form-group col-md-2 my-3">
       <label for="parking">Parcheggio</label>
-      <select id="parking" name="parking" class="form-control">
+      <select id="parking" name="hotelParking" class="form-control">
         <option value="">Tutti</option>
         <option value="1">Con Parcheggio</option>
         <option value="2">Senza Parcheggio</option>
@@ -69,12 +69,12 @@
     </div>
     <div class="form-group col-md-2 mb-1">
       <label for="vote">Voto</label>
-      <select id="vote" name="vote" class="form-control">
+      <select id="vote" name="hotelVote" class="form-control">
         <option value="">Tutti</option>
-        <option value="1">2 Stelle e superiori</option>
-        <option value="2">3 Stelle e superiori</option>
-        <option value="3">4 Stelle e superiori</option>
-        <option value="4">5 Stelle</option>
+        <option value="2">2 Stelle e superiori</option>
+        <option value="3">3 Stelle e superiori</option>
+        <option value="4">4 Stelle e superiori</option>
+        <option value="5">5 Stelle</option>
       </select>
     </div>
     <div class="form-group col-md-2">
@@ -97,6 +97,7 @@
 
     <!-- 
     TEORIA
+    crea un nuovo array contenente solo gli elementi dell'array originale per i quali la funzione di callback restituisce true.
     $filteredArray = array_filter($array, function ($element) {
       codice che verrà verificato o meno
     });
@@ -110,25 +111,24 @@
 
     isset: verifica se una variabile è stata impostata e se il suo valore non è null (in questo caso se un valore è stato selezionato dall'utente);
     $_GET: È una superglobale in PHP che viene utilizzata per recuperare dati dalla query string dell'URL;
-    isset($_GET['x']) sta verificando se la variabile "x" è stata impostata nella query string dell'URL.
     -->
 
     <?php
       $filteredHotels = $hotels;
       
-      if (isset($_GET['parking']) && $_GET['parking'] === '1') {
+      if ($_GET['hotelParking'] === '1') {
         $filteredHotels = array_filter($filteredHotels, function ($hotel) {
             return $hotel['parking'];
         });
-      } elseif (isset($_GET['parking']) && $_GET['parking'] === '2') {
+      } elseif ($_GET['hotelParking'] === '2') {
           $filteredHotels = array_filter($filteredHotels, function ($hotel) {
               return !$hotel['parking'];
           });
       }
     
-      if (isset($_GET['vote']) && $_GET['vote']) {
+      if ($_GET['hotelVote']) {
         $filteredHotels = array_filter($filteredHotels, function ($hotel) {
-            return $hotel['vote'] > $_GET['vote'];
+            return $hotel['vote'] >= $_GET['hotelVote'];
         });
       }
 
