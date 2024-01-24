@@ -57,11 +57,11 @@
     // }
   ?>
 
-  <form method="GET">
+  <form>
   <div class="form-row">
     <div class="form-group col-md-2 my-3">
       <label for="parking">Parcheggio</label>
-      <select id="parking" name="hotelParking" class="form-control">
+      <select id="parking" name="parking" class="form-control">
         <option value="">Tutti</option>
         <option value="1">Con Parcheggio</option>
         <option value="2">Senza Parcheggio</option>
@@ -69,7 +69,7 @@
     </div>
     <div class="form-group col-md-2 mb-1">
       <label for="vote">Voto</label>
-      <select id="vote" name="hotelVote" class="form-control">
+      <select id="vote" name="vote" class="form-control">
         <option value="">Tutti</option>
         <option value="2">2 Stelle e superiori</option>
         <option value="3">3 Stelle e superiori</option>
@@ -95,53 +95,32 @@
     </thead>
     <tbody>
 
-    <!-- 
-    TEORIA
-    crea un nuovo array contenente solo gli elementi dell'array originale per i quali la funzione di callback restituisce true.
-    $filteredArray = array_filter($array, function ($element) {
-      codice che verrà verificato o meno
-    });
+    <?php
+      $parking = $_GET['parking'];
+      $vote = $_GET['vote'];
+      
+      foreach ($hotels as $index => $hotel) {
+          if ($parking === '1' && !$hotel['parking']) {
+              continue;
+          } elseif ($parking === '2' && $hotel['parking']) {
+              continue;
+          }
 
-    $numbers = [2, 8, 4, 10, 3, 6];
-    // Utilizza array_filter per mantenere solo i numeri maggiori di 5
-    $filteredNumbers = array_filter($numbers, function ($number) {
-        return $number > 5;
-    });
-    // $filteredNumbers conterrà solo [8, 10, 6]
+          if ($vote && $hotel['vote'] < $_GET['vote']) {
+              continue;
+          }
+    ?>
 
-    isset: verifica se una variabile è stata impostata e se il suo valore non è null (in questo caso se un valore è stato selezionato dall'utente);
-    $_GET: È una superglobale in PHP che viene utilizzata per recuperare dati dalla query string dell'URL;
-    -->
+      <tr>
+        <td> <?php echo ($index + 1)?> </td>
+        <td> <?php echo $hotel['name']?> </td>
+        <td> <?php echo $hotel['description']?> </td>
+        <td> <?php echo $hotel['parking'] ? 'Sì' : 'No'?> </td>
+        <td> <?php echo $hotel['vote']?></td>
+        <td> <?php echo $hotel['distance_to_center']?>km</td>
+      </tr>
 
     <?php
-      $filteredHotels = $hotels;
-      
-      if ($_GET['hotelParking'] === '1') {
-        $filteredHotels = array_filter($filteredHotels, function ($hotel) {
-            return $hotel['parking'];
-        });
-      } elseif ($_GET['hotelParking'] === '2') {
-          $filteredHotels = array_filter($filteredHotels, function ($hotel) {
-              return !$hotel['parking'];
-          });
-      }
-    
-      if ($_GET['hotelVote']) {
-        $filteredHotels = array_filter($filteredHotels, function ($hotel) {
-            return $hotel['vote'] >= $_GET['hotelVote'];
-        });
-      }
-
-      // Display degli hotel
-      foreach ($filteredHotels as $index => $hotel) {
-        echo "<tr>
-                <th scope='row'>" . ($index + 1) . "</th>
-                <td>{$hotel['name']}</td>
-                <td>{$hotel['description']}</td>
-                <td>" . ($hotel['parking'] ? 'Sì' : 'No') . "</td>
-                <td>{$hotel['vote']}</td>
-                <td>{$hotel['distance_to_center']} km</td>
-              </tr>";
       }
     ?>
 
